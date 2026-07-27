@@ -192,7 +192,7 @@ export const adminsOrSelf: Access = ({ req: { user } }) => {
 export const Posts: CollectionConfig = {
   slug: 'posts',
   access: {
-    create: authenticated,
+    create: isAuthenticated,
     read: authenticatedOrPublished,
     update: adminsOrEditors,
     delete: admins,

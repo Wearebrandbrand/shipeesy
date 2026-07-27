@@ -1,18 +1,18 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { isAdmin, isOwnUserDocument } from '../../access/user'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    admin: isAdmin,
+    create: isAdmin,
+    delete: (...args) => isOwnUserDocument(...args) || isAdmin(...args),
+    read: (...args) => isOwnUserDocument(...args) || isAdmin(...args),
+    update: (...args) => isOwnUserDocument(...args) || isAdmin(...args),
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',
   },
   auth: true,
@@ -21,6 +21,17 @@ export const Users: CollectionConfig = {
       name: 'name',
       type: 'text',
     },
+    {
+      name: "email",
+      type: "email",
+    },
+    {
+      required: true,
+      name: 'role',
+      type: 'select',
+      options: ["admin", "editor", "client"],
+      hasMany: true,
+    }
   ],
   timestamps: true,
 }
