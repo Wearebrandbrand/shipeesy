@@ -28,8 +28,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       className={cn(
         inter.variable,
-        // https://ui.shadcn.com/typeset
-        "typeset-shipeezy"
       )}
       lang="en"
       suppressHydrationWarning
