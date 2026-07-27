@@ -41,6 +41,9 @@ pnpx create-payload-app my-project -t website
 
 1. First [clone the repo](#clone) if you have not done so already
 1. `cd my-project && cp .env.example .env` to copy the example environment variables
+2. Make sure the mongo connection string is set correctly in `.env`
+  1. If you want to use a local MongoDB instance, you can use the docker-compose dev profile: `docker compose --profile dev up`, and set `MONGO_URL` to `mongodb://localhost:27017/shipeezy`
+  2. Otherwise, set `MONGO_URL` to your MongoDB connection string of your choice
 1. `pnpm install && pnpm dev` to install dependencies and start the dev server
 1. open `http://localhost:3000` to open the app in your browser
 

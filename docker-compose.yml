@@ -14,6 +14,8 @@ services:
       - mongo
     env_file:
       - .env
+    profiles:
+      - prod
 
   mongo:
     image: mongo:latest
@@ -24,7 +26,10 @@ services:
     volumes:
       - data:/data/db
     logging:
-      driver: none
+      driver: "json-file"
+    profiles:
+      - dev
+      - prod
 
 volumes:
   data:
