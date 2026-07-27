@@ -3,6 +3,7 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import nodemailer from 'nodemailer'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
@@ -86,5 +87,65 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  email: () => {
+    // const resend = process.env.RESEND_API_KEY
+    //   ? new Resend(process.env.RESEND_API_KEY)
+    //   : null
+
+    // if (process.env.SENDGRID_API_KEY) {
+    //   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    // }
+
+    return ({
+      name: 'Remco',
+      defaultFromName: 'Shipeezy',
+      defaultFromAddress: process.env.EMAIL_FROM || '',
+      sendEmail: async () => {
+        const provider = process.env.EMAIL_PROVIDER || 'local'
+
+        if (provider === 'local') {
+          // Nodemailer (SMTP) – for local dev
+          return nodemailer.createTransport({
+            host: process.env.SMTP_HOST || 'mailhog',
+            port: Number(process.env.SMTP_PORT || 1025),
+            secure: false,
+          })
+        }
+
+        // if (provider === 'sendgrid') {
+        //   // Fake transport that proxies through SendGrid API
+        //   return {
+        //     sendMail: async (options: any) => {
+        //       await sgMail.send({
+        //         to: options.to,
+        //         from: options.from || process.env.EMAIL_FROM!,
+        //         subject: options.subject,
+        //         text: options.text,
+        //         html: options.html,
+        //       })
+        //     },
+        //   } as any
+        // }
+
+        // if (provider === 'resend') {
+        //   // Fake transport that proxies through Resend API
+        //   return {
+        //     sendMail: async (options: any) => {
+        //       if (!resend) throw new Error('RESEND_API_KEY not set')
+        //       await resend.emails.send({
+        //         from: options.from || process.env.EMAIL_FROM!,
+        //         to: Array.isArray(options.to) ? options.to : [options.to],
+        //         subject: options.subject,
+        //         text: options.text,
+        //         html: options.html,
+        //       })
+        //     },
+        //   } as any
+        // }
+
+        throw new Error(`Unknown EMAIL_PROVIDER: ${provider}`)
+      },
+    })
   },
 })

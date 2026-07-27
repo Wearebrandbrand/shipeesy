@@ -49,6 +49,15 @@ services:
     profiles:
       - dev
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: unless-stopped
+    ports:
+      - "8025:8025" # UI
+      - "1025:1025" # SMTP
+    profiles:
+      - dev
+
 volumes:
   data:
   node_modules:
