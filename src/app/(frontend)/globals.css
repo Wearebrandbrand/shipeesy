@@ -1,15 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import "./typeset.css";
-
-.typeset-shipeezy {
-  --typeset-font-body: var(--font-inter);
-  --typeset-font-heading: var(--font-inter);
-  --typeset-font-mono: var(--font-inter);
-  --typeset-size: 14px;
-  --typeset-leading: 1.75;
-  --typeset-flow: 1.25em;
-}
 
 @config '../../../tailwind.config.mjs';
 
@@ -160,7 +150,7 @@
   --error: oklch(75% 0.15 25deg);
 }
 
-/*[data-theme='dark'] {
+[data-theme='dark'] {
   --background: oklch(14.5% 0 0deg);
   --foreground: oklch(98.5% 0 0deg);
   --card: oklch(17% 0 0deg);
@@ -196,7 +186,7 @@
   --success: oklch(28% 0.1 200deg);
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
-}*/
+}
 
 @theme inline {
   --color-background: var(--background);
