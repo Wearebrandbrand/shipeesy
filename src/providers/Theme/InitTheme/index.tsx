@@ -3,7 +3,9 @@ import React from 'react'
 
 import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
 
-export const InitTheme: React.FC = () => {
+type InitThemeProps = { overrideTheme?: "light" | "dark" }
+
+export const InitTheme: React.FC<InitThemeProps> = ({ overrideTheme } ) => {
   return (
     // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
     <Script
@@ -29,7 +31,9 @@ export const InitTheme: React.FC = () => {
     var themeToSet = '${defaultTheme}'
     var preference = window.localStorage.getItem('${themeLocalStorageKey}')
 
-    if (themeIsValid(preference)) {
+    if ('${overrideTheme}' !== 'undefined') {
+      themeToSet = '${overrideTheme}'
+    } else if (themeIsValid(preference)) {
       themeToSet = preference
     } else {
       var implicitPreference = getImplicitPreference()

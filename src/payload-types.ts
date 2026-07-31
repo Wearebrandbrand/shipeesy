@@ -175,6 +175,7 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    caption?: string | null;
     links?:
       | {
           link: {
@@ -195,13 +196,18 @@ export interface Page {
              * Choose how the link should be rendered.
              */
             appearance?: ('default' | 'outline') | null;
+            /**
+             * Choose the size of the link.
+             */
+            size?: ('default' | 'lg' | 'sm' | 'xs') | null;
+            icon?: string | null;
           };
           id?: string | null;
         }[]
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | StatStripBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -480,6 +486,11 @@ export interface CallToActionBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose the size of the link.
+           */
+          size?: ('default' | 'lg' | 'sm' | 'xs') | null;
+          icon?: string | null;
         };
         id?: string | null;
       }[]
@@ -530,6 +541,11 @@ export interface ContentBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose the size of the link.
+           */
+          size?: ('default' | 'lg' | 'sm' | 'xs') | null;
+          icon?: string | null;
         };
         id?: string | null;
       }[]
@@ -772,6 +788,20 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatStripBlock".
+ */
+export interface StatStripBlock {
+  stats: {
+    label: string;
+    value: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statStripBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1056,6 +1086,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        caption?: T;
         links?:
           | T
           | {
@@ -1068,6 +1099,8 @@ export interface PagesSelect<T extends boolean = true> {
                     url?: T;
                     label?: T;
                     appearance?: T;
+                    size?: T;
+                    icon?: T;
                   };
               id?: T;
             };
@@ -1081,6 +1114,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        statStripBlock?: T | StatStripBlockSelect<T>;
       };
   meta?:
     | T
@@ -1114,6 +1148,8 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              size?: T;
+              icon?: T;
             };
         id?: T;
       };
@@ -1140,6 +1176,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              size?: T;
+              icon?: T;
             };
         id?: T;
       };
@@ -1177,6 +1215,21 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatStripBlock_select".
+ */
+export interface StatStripBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1646,6 +1699,11 @@ export interface Header {
               } | null);
           url?: string | null;
           label: string;
+          /**
+           * Choose the size of the link.
+           */
+          size?: ('default' | 'lg' | 'sm' | 'xs') | null;
+          icon?: string | null;
         };
         id?: string | null;
       }[]
@@ -1675,6 +1733,11 @@ export interface Footer {
               } | null);
           url?: string | null;
           label: string;
+          /**
+           * Choose the size of the link.
+           */
+          size?: ('default' | 'lg' | 'sm' | 'xs') | null;
+          icon?: string | null;
         };
         id?: string | null;
       }[]
@@ -1698,6 +1761,8 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              size?: T;
+              icon?: T;
             };
         id?: T;
       };
@@ -1721,6 +1786,8 @@ export interface FooterSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              size?: T;
+              icon?: T;
             };
         id?: T;
       };

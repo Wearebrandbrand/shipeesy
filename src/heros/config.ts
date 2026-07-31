@@ -53,6 +53,12 @@ export const hero: Field = {
       }),
       label: false,
     },
+    {
+      name: 'caption',
+      type: 'text',
+      label: 'Caption',
+      required: false,
+    },
     linkGroup({
       overrides: {
         maxRows: 2,

@@ -135,5 +135,30 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     })
   }
 
+  linkResult.fields.push({
+    name: 'size',
+    type: 'select',
+    admin: {
+      description: 'Choose the size of the link.',
+    },
+    defaultValue: 'default',
+    options: [
+      { label: 'Default', value: 'default' },
+      { label: 'Large', value: 'lg' },
+      { label: 'Small', value: 'sm' },
+      { label: 'Extra Small', value: 'xs' },
+    ],
+  })
+
+  linkResult.fields.push({
+    name: 'icon',
+    type: 'select',
+    admin: {
+      description: "",
+    },
+    defaultValue: undefined,
+    options: [],
+  })
+
   return deepMerge(linkResult, overrides)
 }

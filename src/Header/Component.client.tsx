@@ -1,41 +1,58 @@
-'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+// components/site-header.tsx
+"use client"
 
-import type { Header } from '@/payload-types'
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"
 
-import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
+const navItems = [
+  { href: "/#hoe-het-werkt", label: "Hoe het werkt" },
+  { href: "/kennisbank", label: "Kennisbank" },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/over-ons", label: "Over ons" },
+]
 
-interface HeaderClientProps {
-  data: Header
-}
-
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
+export function HeaderClient() {
   const pathname = usePathname()
 
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
-
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
-        <HeaderNav data={data} />
+    <header className="border-b border-[#eceae3] bg-white">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-10 py-4">
+        <div className="flex items-center gap-10">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-[30px] w-[30px] items-center justify-center rounded-[9px] bg-[#2f5fd0]">
+              <div className="h-3 w-3 rounded-[2px] bg-white rotate-45" />
+            </div>
+            <span className="text-[19px] font-extrabold tracking-[-0.02em] text-[#12233d]">
+              Shipeesy
+            </span>
+          </Link>
+
+          <nav className="hidden gap-7 text-[14px] font-medium text-[#46505f] md:flex">
+            {navItems.map((item) => {
+              const active =
+                pathname === item.href || (item.href === "/#hoe-het-werkt" && pathname === "/")
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={active ? "text-[#12233d] font-semibold" : undefined}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button className="text-[14px] font-medium text-[#2f5fd0] hover:underline">
+            Inloggen
+          </button>
+          <Button size="sm" className="rounded-full bg-[#2f5fd0] text-white px-4">
+            Start je boeking
+          </Button>
+        </div>
       </div>
     </header>
   )
