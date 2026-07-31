@@ -3,12 +3,15 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../../access/user'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { StatStripBlock } from '../../blocks/StatStrip/config'
+import { Archive } from '@/blocks/ArchiveBlock/config'
+import { CallToAction } from '@/blocks/CallToAction/config'
+import { Content } from '@/blocks/Content/config'
+import { FormBlock } from '@/blocks/Form/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { StatStripBlock } from '@/blocks/StatStrip/config'
+import { StepsBlock } from '@/blocks/Steps/config'
+import { FeatureBandBlock } from '@/blocks/FeatureBand/config'
+import { FAQBlock } from '@/blocks/FAQBlock/config'
 
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
@@ -75,7 +78,17 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, StatStripBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                StatStripBlock,
+                StepsBlock,
+                FeatureBandBlock,
+                FAQBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
