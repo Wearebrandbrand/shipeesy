@@ -5,7 +5,7 @@ const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...pr
   return (
     <div
       data-slot="card"
-      className={cn('bg-card text-card-foreground rounded-lg border shadow-sm', className)}
+      className={cn('bg-card text-card-foreground rounded-lg border shadow-sm p-6', className)}
       {...props}
     />
   )
@@ -15,7 +15,7 @@ const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className,
   return (
     <div
       data-slot="card-header"
-      className={cn('flex flex-col gap-1.5 p-6', className)}
+      className={cn('flex flex-col gap-1.5 pb-6', className)}
       {...props}
     />
   )
@@ -45,7 +45,7 @@ const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
 }
 
 const CardContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
-  return <div data-slot="card-content" className={cn('p-6 pt-0', className)} {...props} />
+  return <div data-slot="card-content" className={cn(className)} {...props} />
 }
 
 const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {

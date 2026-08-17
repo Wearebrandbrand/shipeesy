@@ -19,10 +19,6 @@ import {
   Label,
 } from "@/components/ui/label";
 import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
-import {
   Switch,
 } from "@/components/ui/switch";
 import {
@@ -44,20 +40,23 @@ type VolumeMode = "known" | "boxes";
 
 export default function ShipmentPage() {
   const [freightType, setFreightType] = useState<FreightType>("sea");
-  const [incoterm, setIncoterm] = useState<Incoterm>("EXW");
+
+  const [incoterm, setIncoterm] = useState<Incoterm>("FOB");
+
   const [containerType, setContainerType] = useState<ContainerType>("LCL");
+
   const [fromPort, setFromPort] = useState("");
   const [toPort, setToPort] = useState("");
+
   const [volumeMode, setVolumeMode] = useState<VolumeMode>("known");
   const [cbm, setCbm] = useState("");
-  const [boxCount, setBoxCount] = useState("");
+
   const [isDangerous, setIsDangerous] = useState<"yes" | "no" | "unknown">("no");
   const [stackable, setStackable] = useState<"yes" | "no" | "unknown">("yes");
   const [palletized, setPalletized] = useState<"yes" | "no" | "unknown">("no");
+
   const [insured, setInsured] = useState(true);
   const [value, setValue] = useState("");
-
-  console.log("stackable", stackable);
 
   const showContainerType = freightType === "sea";
 
@@ -217,7 +216,12 @@ export default function ShipmentPage() {
               </section>
 
               {/* 5. Hoeveel volume? */}
-              <VolumeSection />
+              <VolumeSection
+                volumeMode={volumeMode}
+                setVolumeMode={setVolumeMode}
+                cbm={cbm}
+                setCbm={setCbm}
+              />
 
               {/* 6. Eigenschappen van je lading */}
               <section className="space-y-4">
@@ -300,33 +304,35 @@ export default function ShipmentPage() {
 
               {/* 7. Waarde en verzekering */}
               <section className="space-y-3">
-                <h2 className="text-lg font-semibold">7 · Waarde en verzekering</h2>
-                <div className="flex flex-wrap items-center gap-4">
-                  <div className="flex items-center space-x-2">
+              <h2 className="text-lg font-semibold">7 · Waarde en verzekering</h2>
+                <Card>
+                  <CardContent className="flex items-center gap-4">
                     <Switch
                       id="insured"
                       checked={insured}
                       onCheckedChange={(v) => setInsured(!!v)}
+                      size="lg"
                     />
-                    <Label htmlFor="insured">Ja, verzeker mijn zending</Label>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Dekking op basis van de opgegeven waarde.
-                  </p>
-                </div>
-
-                <div className="max-w-xs space-y-1">
-                  <Label htmlFor="value">Waarde (€)</Label>
-                  <Input
-                    id="value"
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    placeholder="Bijv. 25000"
-                  />
-                </div>
+                    <div className="flex flex-col space-y-1">
+                      <Label htmlFor="insured">Ja, verzeker mijn zending</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Dekking op basis van de opgegeven waarde.
+                      </p>
+                    </div>
+                    <div className="flex flex-col space-y-1 ml-auto w-1/3">
+                      <Label htmlFor="value">Waarde (€)</Label>
+                      <Input
+                        id="value"
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        placeholder="Bijv. 25000"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
               </section>
 
               {/* CTA */}
@@ -443,11 +449,17 @@ function PortSelect({
 
 function VolumeSection({
   className,
+  volumeMode,
+  setVolumeMode,
+  cbm,
+  setCbm,
 }: {
-  className?: string
+  className?: string;
+  volumeMode: VolumeMode;
+  setVolumeMode: (mode: VolumeMode) => void;
+  cbm: string;
+  setCbm: (cbm: string) => void;
 }) {
-  const [mode, setMode] = useState<"known" | "boxes">("boxes")
-  const [knownCbm, setKnownCbm] = useState<string>("")
   const [boxes, setBoxes] = useState<BoxType[]>([
     {
       id: crypto.randomUUID(),
@@ -506,10 +518,10 @@ function VolumeSection({
   )
 
   const activeTotalCbm =
-    mode === "known"
-      ? knownCbm === ""
+    volumeMode === "known"
+      ? cbm === ""
         ? 0
-        : Number(knownCbm.replace(",", "."))
+        : Number(cbm.replace(",", "."))
       : totalCbmFromBoxes
 
   return (
@@ -525,8 +537,8 @@ function VolumeSection({
       </div>
 
       <Tabs
-        value={mode}
-        onValueChange={(v) => setMode(v as "known" | "boxes")}
+        value={volumeMode}
+        onValueChange={(v) => setVolumeMode(v as "known" | "boxes")}
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-2">
@@ -562,8 +574,8 @@ function VolumeSection({
                     id="known-cbm"
                     inputMode="decimal"
                     placeholder="Bijv. 12,5"
-                    value={knownCbm}
-                    onChange={(e) => setKnownCbm(e.target.value)}
+                    value={cbm}
+                    onChange={(e) => setCbm(e.target.value)}
                     className="max-w-[200px]"
                   />
                   <span className="text-sm text-muted-foreground">CBM</span>
